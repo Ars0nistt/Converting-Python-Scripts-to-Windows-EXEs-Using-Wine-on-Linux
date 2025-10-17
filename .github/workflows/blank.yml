@@ -1,0 +1,48 @@
+# Install Wine (I originally did this method on Nobara, which is a fork of Fedora, so it uses Fedora commands. I've included a few installation commands for other distros below, but you may need to search yours up on the web. Same goes for the rest of the lines in here.)
+# Make sure you use the sudo command at all steps in the process, as admin privileges are necessary to get through the program 
+sudo dnf install wine
+
+# Arch Linux:
+# sudo pacman -S wine
+
+# Debian-based systems such as Ubuntu and Linx Mint:
+# sudo apt-get install wine 
+
+# OpenSUSE (Tumbleweed, etc.):
+# sudo zypper install wine 
+
+# Check wine version
+wine --version 
+
+#Update wine if necessary (again, a Fedora command; if you're using a different distro, pick a command from the list above to go with update or upgrade, whichever your distro uses) 
+sudo dnf update wine 
+
+# Download and install Python for Windows in Wine (this is the latest Python version as of this writing, but you may need to double check the current release on the official Python download page here: https://www.python.org/downloads/). 
+wget https://www.python.org/ftp/python/3.11.8/python-3.11.8-amd64.exe
+wine python-3.11.8-amd64.exe
+
+#Check Python version
+wine python --version
+
+# Update Python if necessary (you can still use older versions of Python, but some no longer receive rolling support)
+# Download latest Python installer (the version will be different depending on when you are doing this, same goes for the rest of the steps in this section; ensure you have the right version numbers in your command line instead of just copying and pasting these commands)
+wget https://www.python.org/ftp/python/3.12.0/python-3.12.0-amd64.exe
+# Install new Python version in Wine
+wine python-3.12.0-amd64.exe
+# Update pip in the new Python version
+wine ~/.wine/drive_c/users/$(whoami)/AppData/Local/Programs/Python/Python312/python.exe -m pip install --upgrade pip
+
+# Install PyInstaller in Wine Python (This entire method uses the program PyInstaller, which I believe is the easiest option. Other options exist like cx_Freeze and py2exe.)
+wine ~/.wine/drive_c/users/$(whoami)/AppData/Local/Programs/Python/Python311/python.exe -m pip install pyinstaller
+
+# Install required dependencies (if needed) [Again, replace the Python version with the correct one you looked up and installed in the step on line 20 above.]
+wine ~/.wine/drive_c/users/$(whoami)/AppData/Local/Programs/Python/Python311/python.exe -m pip install pandas
+
+# Convert Python script to executable (Windows EXE file)
+cd /path/to/your/script
+wine ~/.wine/drive_c/users/$(whoami)/AppData/Local/Programs/Python/Python311/Scripts/pyinstaller.exe --onefile --windowed --name="YourAppName" your_script.py
+
+# Executable will be created in ./dist/YourAppName.exe (which will be created in your Downloads folder or wherever you are sourcing the .py file from)
+
+# Great job, you're all done! You'll need to download and test the .exe file in a virtual Windows machine or under Wine in your Linux environment, since baremetal Linux isn't set up to handle .exe files. 
+# For instructions on MacOS, I won't be giving comprehensive instructions, but they are largely the same only using Homebrew instead of Wine (one of the MacOS versions of a Windows compatibility layer). Look up all relevant commands for MacOS to see where they differ from what I've provided here, before you start.
